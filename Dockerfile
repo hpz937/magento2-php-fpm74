@@ -6,3 +6,6 @@ COPY 01-extensions.conf /usr/local/etc/php/conf.d/01-extensions.ini
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions json pdo pdo-mysql zip gd mbstring curl xml bcmath soap intl
 RUN docker-php-ext-install mysqli pdo pdo_mysql opcache
+RUN useradd -d /srv/magento -M -s /usr/sbin/nologin -G www-data magento && \
+    sed -i "s/user = www-data/user = magento/ig" /usr/local/etc/php-fpm.d/www.conf && \
+    sed -i "s/group = www-data/group = magento/ig" /usr/local/etc/php-fpm.d/www.conf
